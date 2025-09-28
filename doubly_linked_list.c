@@ -30,10 +30,8 @@ void push(List **list, int val)
     newNode->previous = (*list)->tail;
     (*list)->tail->next = newNode;
     (*list)->tail = newNode;
-   
 
     return;
-
 }
 
 
