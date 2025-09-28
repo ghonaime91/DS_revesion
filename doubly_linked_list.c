@@ -115,6 +115,50 @@ void insertAtPos(List**list, int pos, int val)
 }
 
 
+void insertAfterPos(List**list, int pos, int val)
+{
+    if(pos < 1 || pos > length(*list) )
+    {
+        printf("Bad Location\n");
+        return;
+    }
+
+
+    if((*list)->head == NULL || pos == length(*list) )
+    {
+        push(list, val);
+        return;
+    }
+    
+    
+    Node* newNode = (Node*) malloc(sizeof(Node));
+    newNode->value    = val;
+    newNode->next     = NULL;
+    newNode->previous = NULL;
+
+    Node*temp = (*list)->head;
+    int i = 1;
+    while (i < pos)
+    {
+        temp = temp->next;
+        i++;
+    }
+
+    newNode->next = temp->next;
+    newNode->previous = temp;
+
+    if(temp->next != NULL)
+        temp->next->previous = newNode;
+    else
+    (*list)->tail = newNode;
+    
+    temp->next = newNode;
+
+    return;
+    
+}
+
+
 
 void display(List* list)
 {
@@ -143,6 +187,7 @@ int main(void) {
     insertFirst(&list,10);
     insertAtPos(&list,6,18);
     insertAtPos(&list,1,18);
+    insertAfterPos(&list,7,19);
     display(list);
 
     printf("\nlength is %d", length(list));
