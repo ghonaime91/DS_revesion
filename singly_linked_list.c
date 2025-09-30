@@ -239,6 +239,33 @@ void reverseList(Node ** head)
 
 }
 
+void displayReversedListRecursive(Node *head)
+{
+    if(head == NULL || head->next == NULL)
+    {
+        return;
+    }
+    displayReversedListRecursive(head->next);
+    printf("%d\t", head->value);
+}
+
+
+void reverseListRecursive(Node **head)
+{
+       if(head == NULL || (*head)->next == NULL)
+    {
+        return;
+    }
+
+    Node*rest = (*head)->next;
+    reverseListRecursive(&rest);
+    (*head)->next->next = *head;
+    (*head)->next = NULL;
+    
+    *head = rest;
+
+}
+
 int main(void) {
 
         Node* head = NULL;
