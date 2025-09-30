@@ -265,6 +265,29 @@ void display(List* list)
     
 }
 
+void reverseList(List** list)
+{
+  if((*list)->head == NULL)
+  {
+    printf("Empty List\n");
+    return;
+  }
+
+    Node *head_temp = (*list)->head;
+    Node *temp = NULL;
+    while (head_temp)
+    {
+        temp = head_temp->previous;
+        head_temp->previous = head_temp->next;
+        head_temp->next = temp;
+        head_temp = head_temp->previous;
+    }
+    temp = (*list)->head ;
+    (*list)->head = (*list)->tail;
+    (*list)->tail = temp;
+    return;
+}
+
 
 
 int main(void) {
@@ -277,14 +300,17 @@ int main(void) {
     insertFirst(&list,30);
     insertFirst(&list,20);
     insertFirst(&list,10);
-    insertAtPos(&list,6,18);
-    insertAfterPos(&list,2,19);
-    deleteFirst(&list);
-    deleteLast(&list);
-    deleteFromPos(&list, 6);
+    // insertAtPos(&list,6,18);
+    // insertAfterPos(&list,2,19);
+    // deleteFirst(&list);
+    // deleteLast(&list);
+    // deleteFromPos(&list, 6);
+    display(list);
+    reverseList(&list);
+    printf("\nAfter Reversing\n");
     display(list);
 
-    printf("\nlength is %d", length(list));
+    // printf("\nlength is %d", length(list));
 
     return 0;
 }
