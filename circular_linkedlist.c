@@ -40,7 +40,7 @@ int length(Node *head)
         return 0;
 
     int count = 0;
-    while (temp)
+    while (temp->next != head )
     {
         count++;
         temp = temp->next;
