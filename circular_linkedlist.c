@@ -33,23 +33,21 @@ void push(Node**head, int val)
 }
 
 
-int length(Node *head)
+int length(Node* head)
 {
-    Node*temp = head;
     if (head == NULL)
         return 0;
 
     int count = 0;
-    while (temp->next != head )
+    Node* temp = head;
+    do
     {
         count++;
         temp = temp->next;
-    }
+    } while (temp != head);
 
     return count;
-    
 }
-
 
 
 void display(Node* head)
@@ -91,5 +89,6 @@ int main(void) {
         push(&head,40);
         push(&head,50);
         display(head);
+        printf("\n\nNumber of Nodes is %d", length(head));
     return 0;
 }
