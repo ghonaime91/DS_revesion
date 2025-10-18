@@ -7,33 +7,89 @@ typedef struct node
    struct node *next;  
 } Node;
 
-void push(Node**head, int val)
+Node *head = NULL;
+Node *tail = NULL;
+
+
+void push(int val)
 {
 
     Node* newNode  = (Node*) malloc(sizeof(Node));
-    newNode->next  = *head;
     newNode->value = val;
 
-    if(*head == NULL)
+    if(head == NULL)
     {
         newNode->next = newNode;
-        *head = newNode;
+        head = tail = newNode;
         return;
     }
 
-    Node*temp = *head;
-    while (temp->next != *head)
-    {
-        temp = temp->next;
-    }
+    tail->next = newNode;
+    tail = newNode;
+    tail->next = head;
+}
 
-    temp->next = newNode;
-    return; 
+void pushWithTail(int val)
+{
+    Node* newNode  = (Node*) malloc(sizeof(Node));
+    newNode->value = val;
+
+    if(tail == NULL)
+    {
+        newNode->next = newNode;
+        tail = newNode;
+        return;
+    }
+    newNode->next = tail->next;
+    tail->next = newNode;
+    tail = newNode;
+}
+
+void displayWithTail()
+{
+    if(tail == NULL)
+        return;
+    Node *temp = tail->next;
+    do
+    {
+        printf("The Value Is %d\n", temp->value);
+        temp = temp->next;
+    } while (temp != tail->next);
     
 }
 
+void insertFirstWithTail(int val)
+{
+    if(tail == NULL)
+    {
+        pushWithTail(val);
+        return;
+    }
+    Node* newNode  = (Node*) malloc(sizeof(Node));
+    newNode->value = val;
+    newNode->next = tail->next;
+    tail->next = newNode;
+    // Update head pointer for compatibility with functions that rely on 'head'.
+    // In a pure tail-only implementation, this line wouldn't be necessary
+    // because tail->next already represents the head.
+    head = newNode;
+}
 
-int length(Node* head)
+void insertFirst(int val)
+{
+    if(head == NULL)
+    {
+        push(val);
+        return;
+    }
+    Node* newNode  = (Node*) malloc(sizeof(Node));
+    newNode->value = val;
+    newNode->next = head;
+    head = newNode;
+    tail->next = head;
+}
+
+int length()
 {
     if (head == NULL)
         return 0;
@@ -50,7 +106,7 @@ int length(Node* head)
 }
 
 
-void display(Node* head)
+void display()
 {
     if(head == NULL)
         return;
@@ -64,31 +120,83 @@ void display(Node* head)
     
 }
 
-void deleteFirstNode(Node**head)
+void deleteFirstNode()
 {
-    if(*head == NULL)
+    if(head == NULL)
     {
         printf("Empty List!\n");
         return ;
     }
     
+    int len = length();
+    if (len == 1)
+    {
+        free(head);
+        head = tail = NULL;
+        return;
+    }
      
-    Node* temp = *head;
-    *head = (*head)->next;
+    Node* temp = head;
+    head = head->next;
+    tail->next = head;
     free(temp);
-    return;
 }
 
+/*
+    Inserts a new node at the given position in a circular linked list (tail-based).
+    - If the list is empty or position == len + 1 → append using pushWithTail().
+    - If position == 1 → insert at the beginning using insertFirstWithTail().
+    - Otherwise → insert in the middle.
+    Note: Positions are 1-indexed.
+*/
 
-int main(void) {
+void insertAtPosWithTail(int val, int pos)
+{
+    int len = length();
+    if(tail == NULL || pos == len+1)
+    {
+        pushWithTail(val);
+        return;
+    }
+    else if (pos == 1)
+    {
+        insertFirstWithTail(val);
+        return;
+    }
+    else if (pos<1 || pos>len)
+        return;
 
-        Node* head = NULL;
-        push(&head,10);
-        push(&head,20);
-        push(&head,30);
-        push(&head,40);
-        push(&head,50);
-        display(head);
-        printf("\n\nNumber of Nodes is %d", length(head));
+
+    int i = 1;
+    Node*temp = tail->next;
+    while (i<pos-1)
+    {
+        temp = temp->next;
+        i++;
+    }
+
+    Node* newNode  = (Node*) malloc(sizeof(Node));
+    newNode->value = val;
+    newNode->next  = temp->next;
+    temp->next     = newNode;
+
+}
+
+int main(void)
+{
+    push(10);
+    push(20);
+    push(30);
+    push(40);
+    insertFirst(5);
+    pushWithTail(50);
+    insertAtPosWithTail(1,2);
+    insertAtPosWithTail(3,4);
+    insertAtPosWithTail(33,8);
+    display();
+    
+    // printf("\n\nThe Length Of List Is %d\n",length());
+    // printf("\nValue Of Head Node Is %d By Tail Node\n",tail->next->value);
+    // displayWithTail();
     return 0;
 }
