@@ -223,19 +223,17 @@ void reverseList(Node ** head)
 {
     if(*head == NULL || (*head)->next == NULL)
         return;
-    Node*prevNode,*curr,*nextNode;
-    curr = nextNode = *head;
-    prevNode = NULL;
-    while (nextNode)
+    Node*prevNode = NULL,*curr = *head,*nextNode = NULL;
+    curr = *head;
+    while (curr != NULL)
     {
-        nextNode   = nextNode->next;
+        nextNode  = curr->next;
         curr->next = prevNode;
         prevNode = curr;
         curr = nextNode;
     }
 
     *head = prevNode;
-    
 
 }
 
