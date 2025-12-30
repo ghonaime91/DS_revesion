@@ -54,6 +54,47 @@ void displayWithTail()
     } while (temp != tail->next);
 }
 
+void reverse()
+{
+    if(head == NULL || length() == 1)
+        return;
+        
+    Node*prev = tail, *curr = head, *next_node = NULL;
+    do {
+
+        next_node = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next_node;
+
+    } while (curr != head);
+
+    Node*temp = head;
+    head = tail ;
+    tail = temp;
+    
+}
+
+void reverseWithTail()
+{
+    if(tail == NULL || tail->next == tail) 
+        return;
+
+    Node* prev = tail;          
+    Node* curr = tail->next;    
+    Node* next_node = NULL;
+    Node* old_head = tail->next; 
+
+    do {
+        next_node = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next_node;
+    } while(curr != old_head);  
+
+    head = prev;  
+    tail = old_head; 
+}
 
 /* -------------------- Insertion Functions -------------------- */
 
@@ -342,6 +383,8 @@ void deleteFromPosWithTail(int pos)
 
 }
 
+
+
 /* -------------------- Main Function -------------------- */
 
 int main(void)
@@ -350,18 +393,22 @@ int main(void)
     push(20);
     push(30);
     push(40);
-    insertFirst(5);
-    pushWithTail(50);
-    insertAtPosWithTail(1,2);
-    insertAtPosWithTail(3,4);
-    insertAtPosWithTail(33,8);
-    deleteFirstNodeWithTail();
-    deleteLastNode();
-    deleteLastNodeWithTail();
-    deleteLastNodeWithTail();
-    deleteFromPos(3);
-    deleteFromPosWithTail(3);
+    // insertFirst(5);
+    // pushWithTail(50);
+    // insertAtPosWithTail(1,2);
+    // insertAtPosWithTail(3,4);
+    // insertAtPosWithTail(33,8);
+    // deleteFirstNodeWithTail();
+    // deleteLastNode();
+    // deleteLastNodeWithTail();
+    // deleteLastNodeWithTail();
+    // deleteFromPos(3);
+    // deleteFromPosWithTail(3);
+    reverseWithTail();
     display();
+    printf("\n\n\n");
+    reverse();
+    displayWithTail();
     
     // printf("\n\nThe Length Of List Is %d\n",length());
     // printf("\nValue Of Head Node Is %d By Tail Node\n",tail->next->value);
